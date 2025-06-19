@@ -1,0 +1,208 @@
+time,status,arm,data,study,population
+0.2168466,1,HD-MTX,Trial,Trial,Younger
+0.6886456,1,HD-MTX,Trial,Trial,Younger
+1.5647291,1,HD-MTX,Trial,Trial,Younger
+5.5172151,0,HD-MTX,Trial,Trial,Younger
+5.5172151,0,HD-MTX,Trial,Trial,Younger
+5.5993254,0,HD-MTX,Trial,Trial,Younger
+7.1264324,0,HD-MTX,Trial,Trial,Younger
+7.3727121,0,HD-MTX,Trial,Trial,Younger
+9.1461151,0,HD-MTX,Trial,Trial,Younger
+10.6370151,0,HD-MTX,Trial,Trial,Younger
+0.1782667,1,Control,Trial,Trial,Younger
+0.1873089,1,Control,Trial,Trial,Younger
+0.2415618,1,Control,Trial,Trial,Younger
+0.4844941,1,Control,Trial,Trial,Younger
+0.750936,1,Control,Trial,Trial,Younger
+0.874512,1,Control,Trial,Trial,Younger
+0.9860317,1,Control,Trial,Trial,Younger
+0.9860422,1,Control,Trial,Trial,Younger
+1.0933319,1,Control,Trial,Trial,Younger
+1.3043153,1,Control,Trial,Trial,Younger
+5.5008976,0,Control,Trial,Trial,Younger
+6.512321,0,Control,Trial,Trial,Younger
+8.0232849,0,Control,Trial,Trial,Younger
+9.2965834,0,Control,Trial,Trial,Younger
+9.7508849,0,Control,Trial,Trial,Younger
+0.1901415,1,Historical control,Historical control,Leary SES et al,Younger
+0.271773583,1,Historical control,Historical control,Leary SES et al,Younger
+0.49155225,1,Historical control,Historical control,Leary SES et al,Younger
+1.04727825,1,Historical control,Historical control,Leary SES et al,Younger
+1.2285015,1,Historical control,Historical control,Leary SES et al,Younger
+1.49425875,1,Historical control,Historical control,Leary SES et al,Younger
+1.61596375,1,Historical control,Historical control,Leary SES et al,Younger
+4.838709333,0,Historical control,Historical control,Leary SES et al,Younger
+4.838709333,0,Historical control,Historical control,Leary SES et al,Younger
+4.8500045,0,Historical control,Historical control,Leary SES et al,Younger
+4.952011083,0,Historical control,Historical control,Leary SES et al,Younger
+5.27330925,0,Historical control,Historical control,Leary SES et al,Younger
+0.2177387,1,Historical control,Historical control,Robinson G et al ,Younger
+0.3157923,1,Historical control,Historical control,Robinson G et al ,Younger
+0.4493247,1,Historical control,Historical control,Robinson G et al ,Younger
+0.4721535,1,Historical control,Historical control,Robinson G et al ,Younger
+0.4760377,1,Historical control,Historical control,Robinson G et al ,Younger
+0.4957291,1,Historical control,Historical control,Robinson G et al ,Younger
+0.6599971,1,Historical control,Historical control,Robinson G et al ,Younger
+0.6780319,1,Historical control,Historical control,Robinson G et al ,Younger
+0.710429,1,Historical control,Historical control,Robinson G et al ,Younger
+1.4221868,1,Historical control,Historical control,Robinson G et al ,Younger
+1.4879206,1,Historical control,Historical control,Robinson G et al ,Younger
+4.4046718,0,Historical control,Historical control,Robinson G et al ,Younger
+4.9370298,0,Historical control,Historical control,Robinson G et al ,Younger
+0.03799262,1,Historical control,Historical control,Robinson G et al ,Younger
+0.1543471,1,Historical control,Historical control,Robinson G et al ,Younger
+0.15735691,1,Historical control,Historical control,Robinson G et al ,Younger
+0.29979723,1,Historical control,Historical control,Robinson G et al ,Younger
+0.29979723,1,Historical control,Historical control,Robinson G et al ,Younger
+0.57863336,1,Historical control,Historical control,Robinson G et al ,Younger
+0.66743601,1,Historical control,Historical control,Robinson G et al ,Younger
+0.66743601,1,Historical control,Historical control,Robinson G et al ,Younger
+0.81424761,1,Historical control,Historical control,Robinson G et al ,Younger
+0.97792159,1,Historical control,Historical control,Robinson G et al ,Younger
+0.98778237,1,Historical control,Historical control,Robinson G et al ,Younger
+0.02919473,1,Carboplatin,Trial,Trial,Older
+0.567174237,1,Carboplatin,Trial,Trial,Older
+0.643326648,1,Carboplatin,Trial,Trial,Older
+0.689679472,1,Carboplatin,Trial,Trial,Older
+0.736410229,1,Carboplatin,Trial,Trial,Older
+0.977189593,1,Carboplatin,Trial,Trial,Older
+1.09612349,1,Carboplatin,Trial,Trial,Older
+1.13721342,1,Carboplatin,Trial,Trial,Older
+1.30420099,0,Carboplatin,Trial,Trial,Older
+1.49291132,1,Carboplatin,Trial,Trial,Older
+1.53442235,0,Carboplatin,Trial,Trial,Older
+1.65824412,0,Carboplatin,Trial,Trial,Older
+1.65824412,0,Carboplatin,Trial,Trial,Older
+2.00098699,1,Carboplatin,Trial,Trial,Older
+2.1478384,0,Carboplatin,Trial,Trial,Older
+2.24218449,0,Carboplatin,Trial,Trial,Older
+2.63111029,0,Carboplatin,Trial,Trial,Older
+2.6445112,0,Carboplatin,Trial,Trial,Older
+2.76088976,0,Carboplatin,Trial,Trial,Older
+3.09920089,1,Carboplatin,Trial,Trial,Older
+3.80457811,0,Carboplatin,Trial,Trial,Older
+4.0026023,0,Carboplatin,Trial,Trial,Older
+4.81695561,0,Carboplatin,Trial,Trial,Older
+5.2308912,0,Carboplatin,Trial,Trial,Older
+6.03845611,0,Carboplatin,Trial,Trial,Older
+6.17409981,0,Carboplatin,Trial,Trial,Older
+6.45100012,0,Carboplatin,Trial,Trial,Older
+6.7221341,0,Carboplatin,Trial,Trial,Older
+7.00541123,1,Carboplatin,Trial,Trial,Older
+7.24745112,0,Carboplatin,Trial,Trial,Older
+7.37123341,0,Carboplatin,Trial,Trial,Older
+7.4419551,0,Carboplatin,Trial,Trial,Older
+7.46551129,0,Carboplatin,Trial,Trial,Older
+7.5952115,0,Carboplatin,Trial,Trial,Older
+8.14920031,0,Carboplatin,Trial,Trial,Older
+8.15512311,0,Carboplatin,Trial,Trial,Older
+8.39099912,0,Carboplatin,Trial,Trial,Older
+8.60211241,0,Carboplatin,Trial,Trial,Older
+9.52856612,0,Carboplatin,Trial,Trial,Older
+10.16541112,0,Carboplatin,Trial,Trial,Older
+10.2181122,0,Carboplatin,Trial,Trial,Older
+10.2360011,0,Carboplatin,Trial,Trial,Older
+10.28900112,0,Carboplatin,Trial,Trial,Older
+0.1611576,1,Control,Trial,Trial,Older
+0.1824451,1,Control,Trial,Trial,Older
+0.2265749,1,Control,Trial,Trial,Older
+0.4638883,1,Control,Trial,Trial,Older
+0.6904412,1,Control,Trial,Trial,Older
+0.7676714,1,Control,Trial,Trial,Older
+0.8148326,1,Control,Trial,Trial,Older
+0.9878044,1,Control,Trial,Trial,Older
+1.21691121,1,Control,Trial,Trial,Older
+1.21990012,1,Control,Trial,Trial,Older
+1.24081123,1,Control,Trial,Trial,Older
+1.24125511,1,Control,Trial,Trial,Older
+1.3432112,0,Control,Trial,Trial,Older
+1.6488001,0,Control,Trial,Trial,Older
+1.75091123,1,Control,Trial,Trial,Older
+1.864311209,1,Control,Trial,Trial,Older
+2.23621134,1,Control,Trial,Trial,Older
+2.50542312,0,Control,Trial,Trial,Older
+2.63272435,0,Control,Trial,Trial,Older
+2.76009112,0,Control,Trial,Trial,Older
+3.22867112,0,Control,Trial,Trial,Older
+4.13980002,1,Control,Trial,Trial,Older
+5.31421112,1,Control,Trial,Trial,Older
+6.7857001,0,Control,Trial,Trial,Older
+6.92711123,0,Control,Trial,Trial,Older
+7.6698001,0,Control,Trial,Trial,Older
+7.85370012,0,Control,Trial,Trial,Older
+8.25690012,0,Control,Trial,Trial,Older
+8.49715122,0,Control,Trial,Trial,Older
+8.50001123,0,Control,Trial,Trial,Older
+9.3836001,0,Control,Trial,Trial,Older
+9.8484771,0,Control,Trial,Trial,Older
+10.09677,0,Control,Trial,Trial,Older
+10.259302,0,Control,Trial,Trial,Older
+10.711322,0,Control,Trial,Trial,Older
+10.7961122,0,Control,Trial,Trial,Older
+0.2521961,1,Historical control,Historical control,Gajjar A et al ,Older
+0.2918579,1,Historical control,Historical control,Gajjar A et al ,Older
+0.318578,1,Historical control,Historical control,Gajjar A et al ,Older
+0.318578,1,Historical control,Historical control,Gajjar A et al ,Older
+0.4657066,1,Historical control,Historical control,Gajjar A et al ,Older
+0.4657066,1,Historical control,Historical control,Gajjar A et al ,Older
+0.5452822,1,Historical control,Historical control,Gajjar A et al ,Older
+0.6588582,1,Historical control,Historical control,Gajjar A et al ,Older
+0.6808018,1,Historical control,Historical control,Gajjar A et al ,Older
+0.8286194,1,Historical control,Historical control,Gajjar A et al ,Older
+0.8852524,1,Historical control,Historical control,Gajjar A et al ,Older
+0.9418165,1,Historical control,Historical control,Gajjar A et al ,Older
+1.3067961,1,Historical control,Historical control,Gajjar A et al ,Older
+1.7407756,1,Historical control,Historical control,Gajjar A et al ,Older
+1.8200756,1,Historical control,Historical control,Gajjar A et al ,Older
+2.7570346,1,Historical control,Historical control,Gajjar A et al ,Older
+2.7850434,1,Historical control,Historical control,Gajjar A et al ,Older
+2.8015763,1,Historical control,Historical control,Gajjar A et al ,Older
+4.7106316,1,Historical control,Historical control,Gajjar A et al ,Older
+6.0258001,0,Historical control,Historical control,Gajjar A et al ,Older
+6.2088912,0,Historical control,Historical control,Gajjar A et al ,Older
+7.6727121,0,Historical control,Historical control,Gajjar A et al ,Older
+7.9356002,0,Historical control,Historical control,Gajjar A et al ,Older
+8.0844121,0,Historical control,Historical control,Gajjar A et al ,Older
+8.244441,0,Historical control,Historical control,Gajjar A et al ,Older
+9.6627112,0,Historical control,Historical control,Gajjar A et al ,Older
+10.040112,0,Historical control,Historical control,Gajjar A et al ,Older
+10.359002,0,Historical control,Historical control,Gajjar A et al ,Older
+11.69811,0,Historical control,Historical control,Gajjar A et al ,Older
+12.539368,0,Historical control,Historical control,Gajjar A et al ,Older
+12.539368,0,Historical control,Historical control,Gajjar A et al ,Older
+12.539368,0,Historical control,Historical control,Gajjar A et al ,Older
+0.1309773,1,Historical control,Historical control,Bueren A et al,Older
+0.1690816,1,Historical control,Historical control,Bueren A et al,Older
+0.207186,1,Historical control,Historical control,Bueren A et al,Older
+0.4104091,1,Historical control,Historical control,Bueren A et al,Older
+0.435812,1,Historical control,Historical control,Bueren A et al,Older
+1.1597943,1,Historical control,Historical control,Bueren A et al,Older
+1.4392261,1,Historical control,Historical control,Bueren A et al,Older
+1.6297478,1,Historical control,Historical control,Bueren A et al,Older
+1.9345825,1,Historical control,Historical control,Bueren A et al,Older
+2.9162113,0,Historical control,Historical control,Bueren A et al,Older
+3.2428001,1,Historical control,Historical control,Bueren A et al,Older
+3.6112113,0,Historical control,Historical control,Bueren A et al,Older
+4.2081223,0,Historical control,Historical control,Bueren A et al,Older
+4.5257802,0,Historical control,Historical control,Bueren A et al,Older
+4.8051662,0,Historical control,Historical control,Bueren A et al,Older
+5.1226009,0,Historical control,Historical control,Bueren A et al,Older
+5.8593112,0,Historical control,Historical control,Bueren A et al,Older
+7.3073114,0,Historical control,Historical control,Bueren A et al,Older
+7.5359872,0,Historical control,Historical control,Bueren A et al,Older
+7.6375322,0,Historical control,Historical control,Bueren A et al,Older
+0.1096613,1,Historical control,Historical control,Dufour C et al,Older
+0.1198895,1,Historical control,Historical control,Dufour C et al,Older
+0.6390458,1,Historical control,Historical control,Dufour C et al,Older
+1.6870897,1,Historical control,Historical control,Dufour C et al,Older
+2.1108432,1,Historical control,Historical control,Dufour C et al,Older
+3.4386002,0,Historical control,Historical control,Dufour C et al,Older
+3.59607221,1,Historical control,Historical control,Dufour C et al,Older
+6.8790112,1,Historical control,Historical control,Dufour C et al,Older
+6.94611234,0,Historical control,Historical control,Dufour C et al,Older
+7.0150009,0,Historical control,Historical control,Dufour C et al,Older
+7.0563442,0,Historical control,Historical control,Dufour C et al,Older
+7.1181405,0,Historical control,Historical control,Dufour C et al,Older
+7.1633121,0,Historical control,Historical control,Dufour C et al,Older
+7.1633121,0,Historical control,Historical control,Dufour C et al,Older
+7.1633121,0,Historical control,Historical control,Dufour C et al,Older

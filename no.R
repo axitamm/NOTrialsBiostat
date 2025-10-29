@@ -19,25 +19,52 @@ library(patchwork)
 library(forcats)
 library(plotly)
 library(scales) 
+library(tidyr)
 
-d<-read.csv("~/Library/CloudStorage/OneDrive-uoflhealth/NO Trial Designs/NO_Final.csv", header = T, stringsAsFactors = T)
+d<-read.csv("~/Library/CloudStorage/OneDrive-uoflhealth/NO Trial Designs/NO_Final_Oct2025.csv", header = T, stringsAsFactors = T)
 
 length(unique(d$pmid))
-summary(d$Year)
+table(table(d$pmid))
 length(d$Outcome)
 
 diag <- d[!duplicated(d$pmid), ]
+summary(diag$Year)
+sum(diag$Year < 2000, na.rm = TRUE) / length(diag$pmid)
 sort(summary(factor(diag$glioma3)))
+sort(summary(factor(diag$occur[diag$glioma3 == "GBM"])))
+
+table(diag$glioma3,diag$occur)
+table(d$occur)
+table(d$occur)/254*100
+
+table(d$Phase)
+table(d$Phase)/254*100
+
+table(d$Outcome)
+table(d$Outcome)/254*100
 
 table(d$Phase, d$Outcome)
 fisher.test(table(d$Phase, d$Outcome))
 
+table(d$Hypothesis)
+table(d$Hypothesis)/254*100
+
+tab <- table(AgeGroup    = ifelse(d$age == "Elderly", "Elderly", "Other"),
+  Hypothesis  = d$Hypothesis)
+tab
+fisher.test(tab)   # exact p-value
+
+eld<-d[d$age=="Elderly",]
+summary(eld$Outcome)
+length(unique(eld$pmid))
+summary(eld$glioma3)
+
 give.n <- function(x) {return(data.frame(y = max(x)+5, label = paste0("n=", length(x))))}
 
-##### FIGURE 1 ######
+##### Supplemental Fig 3 ######
 
 #Distribution of Year
-a<-gghistogram(d[!duplicated(d[ ,"pmid"]),], x = "Year", bins = 47, fill="lightblue", ylab = "Trials Included", xlab="Publication Year",add = "median")+
+a<-gghistogram(diag, x = "Year", bins = 47, fill="lightblue", ylab = "Trials Included", xlab="Publication Year",add = "median")+
   ggtitle("Yearly Distribution of Trials")+labs(tag = "A")+theme(plot.tag = element_text(face = "bold"))
 
 #Distribution of Diagnosis and Recurrence
@@ -45,29 +72,27 @@ d1<-structure(list(top_level = c("New", "New", "New", "New", "New",
                                  "New", "New", "New", "New", "Recurrent", "Recurrent", "Recurrent", 
                                  "New or recurrent", "New or recurrent", "New or recurrent", "New", 
                                  "Recurrent", "New or recurrent"), value = c("GBM", "HGG", "G3G", 
-                                                                             "LGG", "1p/19q-codel", "MB", "AA", "DIPG", "EPN", "GBM", "HGG", 
+                                                                             "LGG", "DIPG", "MB", "AA", "1p/19q-codel", "EPN", "GBM", "HGG", 
                                                                              "AA", "GBM", "HGG", "MB", "New", "Recurrent", "New or recurrent"
-                                 ), width = c(92, 51, 11, 9, 7, 6, 5, 5, 1, 47, 9, 1, 4, 1, 1, 
-                                              187, 57, 6), name = c("glioma3", "glioma3", "glioma3", "glioma3", 
-                                                                    "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", 
-                                                                    "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", "occur", 
-                                                                    "occur", "occur"), ymid = c(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-                                                                                                2, 2, 2, 2, 1, 1, 1), ymax = c(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 
-                                                                                                                               2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1.5, 1.5), 
-                   ymin = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 
-                            1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5), xmin = c(0, 92, 
-                                                                              143, 154, 163, 170, 176, 181, 186, 187, 234, 243, 244, 248, 
-                                                                              249, 0, 187, 244), xmax = c(92, 143, 154, 163, 170, 176, 
-                                                                                                          181, 186, 187, 234, 243, 244, 248, 249, 250, 187, 244, 250
-                                                                              ), xmid = c(46, 117.5, 148.5, 158.5, 166.5, 173, 178.5, 183.5, 
-                                                                                          186.5, 210.5, 238.5, 243.5, 246, 248.5, 249.5, 93.5, 215.5, 
-                                                                                          247), Location = c("Diagnosis", "Diagnosis", "Diagnosis", 
-                                                                                                             "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", 
-                                                                                                             "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", 
-                                                                                                             "Diagnosis", "Diagnosis", "Occurence", "Occurence", "Occurence"
-                                                                                          )), row.names = c(NA, -18L), class = c("tbl_df", "tbl", "data.frame"
-                                                                                          ))
-
+                                 ), width = c(93L, 57L, 11L, 9L, 6L, 6L, 5L, 5L, 1L, 46L, 9L, 
+                                              1L, 3L, 1L, 1L, 193L, 56L, 5L), name = c("glioma3", "glioma3", 
+                                                                                       "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", 
+                                                                                       "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", "glioma3", 
+                                                                                       "glioma3", "occur", "occur", "occur"), ymid = c(2L, 2L, 2L, 2L, 
+                                                                                                                                       2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 1L, 1L, 1L), ymax = c(2.5, 
+                                                                                                                                                                                                         2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 
+                                                                                                                                                                                                         2.5, 1.5, 1.5, 1.5), ymin = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 
+                                                                                                                                                                                                                                       1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5), xmin = c(0L, 
+                                                                                                                                                                                                                                                                                                        93L, 150L, 161L, 170L, 176L, 182L, 187L, 192L, 193L, 239L, 248L, 
+                                                                                                                                                                                                                                                                                                        249L, 252L, 253L, 0L, 193L, 249L), xmax = c(93L, 150L, 161L, 
+                                                                                                                                                                                                                                                                                                                                                    170L, 176L, 182L, 187L, 192L, 193L, 239L, 248L, 249L, 252L, 253L, 
+                                                                                                                                                                                                                                                                                                                                                    254L, 193L, 249L, 254L), xmid = c(46.5, 121.5, 155.5, 165.5, 
+                                                                                                                                                                                                                                                                                                                                                                                      173, 179, 184.5, 189.5, 192.5, 216, 243.5, 248.5, 250.5, 252.5, 
+                                                                                                                                                                                                                                                                                                                                                                                      253.5, 96.5, 221, 251.5), Location = c("Diagnosis", "Diagnosis", 
+                                                                                                                                                                                                                                                                                                                                                                                                                             "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", 
+                                                                                                                                                                                                                                                                                                                                                                                                                             "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", "Diagnosis", 
+                                                                                                                                                                                                                                                                                                                                                                                                                             "Diagnosis", "Diagnosis", "Diagnosis", "Occurence", "Occurence", 
+                                                                                                                                                                                                                                                                                                                                                                                                                             "Occurence")), class = "data.frame", row.names = c(NA, -18L))
 b<-ggplot() +
   geom_rect(data=d1, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill=value, color = value), linewidth = 0.5) +
   geom_text(data = d1, aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, 
@@ -103,7 +128,7 @@ d2<-ggplot(d %>%
   coord_flip()+ theme_void()+theme(legend.position = "top")
 
 #Hypotheses Distribution
-d$Hypothesis<-factor(d$Hypothesis, levels = c("Superiority","Non-inferiority","Equivalence","N/A"))
+d$Hypothesis<-factor(d$Hypothesis, levels = c("Superiority","Non-inferiority","Equivalence"))
 e<-ggplot(d %>% 
              count(Hypothesis) %>% 
              mutate(pct = n / sum(n)), aes(x = "", y = pct, fill = Hypothesis)) +
@@ -114,7 +139,7 @@ e<-ggplot(d %>%
 (free(a)+free(b)+(c/d2/e))+plot_layout(widths = c(1,2,1.5))
 #14x4in PDF
 
-##### FIGURE 2 ######
+##### FIGURE 1 ######
 
 levels(d$Phase)[levels(d$Phase) == "II/III"] <- "2"
 
@@ -160,7 +185,7 @@ wilcox.test(Type1 ~ Phase, data = d, na.action = na.omit)
 wilcox.test(Type1 ~ Sided, data = d[!d$Sided=="N/A",], na.action = na.omit)
 
 
-##### FIGURE 3 ######
+##### FIGURE 2 ######
 
 #control median survivals
 mos<-subset(d, Outcome=="OS" & !is.na(plan.con.median)) %>% add_count(glioma2) %>% filter(n > 1) %>% distinct(pmid, .keep_all = TRUE)
@@ -221,14 +246,44 @@ ostime<-gbm[gbm$Outcome=="OS",] %>% distinct(pmid, .keep_all = TRUE)
 lm_eqn <- function(df, y, x){
   m <- lm(y ~ x, df)
   p_value <- summary(m)$coefficients[2, 4]
+  r_val <- cor(x, y, method = "pearson", use = "complete.obs")
+  
   eq <- substitute(
-    italic(y)==a + b*italic(x) * ", "* italic(r)^2*"="*r2 * ", p=" ~ pval, 
+    atop(
+      italic(y) == a + b*italic(x) * "," ~ italic(r) * "=" * rval,
+      italic(r)^2 * "=" * r2 * "," ~ italic(p) * "=" * pval
+    ),
     list(
-      a = format(unname(coef(m)[1]), digits = 2),
-      b = format(unname(coef(m)[2]), digits = 2),
-      r2 = format(summary(m)$r.squared, digits = 2),
-      pval = format(p_value, digits = 2, scientific = T)))
-  as.character(as.expression(eq))}
+      a    = format(unname(coef(m)[1]), digits = 2),
+      b    = format(unname(coef(m)[2]), digits = 2),
+      rval = format(r_val,               digits = 2),
+      r2   = format(summary(m)$r.squared, digits = 2),
+      pval = format(p_value,             digits = 2, scientific = F)
+    )
+  )
+  as.character(as.expression(eq))
+}
+
+lm_eqn2 <- function(df, y, x){
+  m <- lm(y ~ x, df)
+  p_value <- summary(m)$coefficients[2, 4]
+  r_val <- cor(x, y, method = "pearson", use = "complete.obs")
+  
+  eq <- substitute(
+    atop(
+      italic(y) == a + b*italic(x) * "," ~ italic(r) * "=" * rval,
+      italic(r)^2 * "=" * r2 * "," ~ italic(p) * "=" * pval
+    ),
+    list(
+      a    = format(unname(coef(m)[1]), digits = 2),
+      b    = format(unname(coef(m)[2]), digits = 2),
+      rval = format(r_val,               digits = 2),
+      r2   = format(summary(m)$r.squared, digits = 2),
+      pval = format(p_value,             digits = 2, scientific = T) #only difference
+    )
+  )
+  as.character(as.expression(eq))
+}
 
 pt<-ggplot(ostime, aes(Year,final.con.median))+geom_smooth(method='lm', formula= y~x, se = T,color = "orangered", fill = "orangered")+geom_point()+
   geom_text(x = 2000, y = 26, label = lm_eqn(ostime, ostime$final.con.median, ostime$Year), parse = TRUE)+theme_pubr()+
@@ -239,6 +294,20 @@ ft<-ggplot(ostime, aes(Year,plan.con.median))+geom_smooth(method='lm', formula= 
   geom_text(x = 2000, y = 26, label = lm_eqn(ostime, ostime$plan.con.median, ostime$Year), parse = TRUE)+theme_pubr()+
   xlab("Year of Trial Publication")+rremove("ylab")+ggtitle("Expected Control Arm Survival in\nNew GBM Trials Over Time")+
   theme(plot.tag = element_text(face = "bold"))+labs(tag = "F")+ylim(5,31.5)
+
+gbm_long <- gbm %>%
+  select(Year, observed = final.con.median, expected = plan.con.median) %>%
+  pivot_longer(cols = c("observed", "expected"),
+               names_to = "OS_type",
+               values_to = "Median_OS")
+
+summary(lm(Median_OS ~ Year * OS_type, data = gbm_long))
+
+ggplot(ostime, aes(Year,dev))+geom_smooth(method='lm', formula= y~x, se = T,color = "orangered", fill = "orangered")+geom_point()+
+  geom_text(x = 2000, y = 5, label = lm_eqn(ostime, ostime$dev, ostime$Year), parse = TRUE)+theme_pubr()+
+  xlab("Year of Trial Publication")+rremove("ylab")+ggtitle("Deviation in Survival in\nNew GBM Trials Over Time")+
+  geom_hline(yintercept = 0, linetype="longdash")+
+  theme(plot.tag = element_text(face = "bold"))+labs(tag = "F")+ylim(-7,6)
 
 #h + hi + i + ii + j + ji + k + ki + pt + plot_spacer() + ft + plot_spacer() + plot_layout(widths = c(4,1,4,1))
 
@@ -252,10 +321,17 @@ ft<-ggplot(ostime, aes(Year,plan.con.median))+geom_smooth(method='lm', formula= 
     widths = c(4, 1, 4, 1))
 #12.5 x 9 in PDF (landscape)
 
-##### FIGURE 4 ######
+##### FIGURE 3 ######
 
 #Hazard ratio based on phase, outcome, and diagnosis
 d$plan.hr<-ifelse(d$plan.hr>1, 1/d$plan.hr,d$plan.hr)
+gbm$plan.hr<-ifelse(gbm$plan.hr>1, 1/gbm$plan.hr,gbm$plan.hr)
+
+summary(na.omit(gbm[gbm$Outcome == "OS", ]$plan.hr))
+length(na.omit(gbm[gbm$Outcome == "OS", ]$plan.hr))
+
+plotly::ggplotly(ggplot(gbm, aes(Hypothesis, plan.hr))+geom_boxplot()+geom_jitter()+stat_compare_means())
+
 quartiles <- d |> 
   group_by(Phase, Outcome) |>
   reframe(y = quantile(plan.hr, c(.25, .5, .75), na.rm = T))
@@ -269,7 +345,7 @@ ggplot(d, aes(x = Phase, y = plan.hr)) + geom_boxplot(width=0.4)+geom_jitter(wid
 
 d3os<-subset(d, Outcome=="OS" & Phase==3 & !is.na(plan.hr)) %>% add_count(glioma2) %>% filter(n > 1) #these are endpoints/arms so unique pmids are not filtered.
 l<-ggplot(d3os, aes(x=fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75)), y=plan.hr))+geom_boxplot(fill="red")+
-  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.67, linetype="longdash")+
+  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.665, linetype="longdash")+
   xlab("Diagnosis")+ylab("Targeted Hazard Ratio")+theme(plot.tag = element_text(face = "bold"))+
   coord_flip(ylim = c(0.45, 0.8))+ggtitle("OS Targeted HR - Phase 3 Trials")+labs(tag = "A")
 li<-ggplot(d3os, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75))))+geom_bar()+
@@ -278,10 +354,16 @@ li<-ggplot(d3os, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75)
   rremove("y.axis")+rremove("ylab")+rremove("y.text")+rremove("y.ticks")+
   coord_flip()
 summary(d3os[d3os$glioma2=="New GBM","plan.hr"])
+summary(d3os[d3os$glioma2=="New GBM" & d3os$Hypothesis=="Superiority","plan.hr"])
+summary(d3pfs[d3pfs$glioma2=="New GBM" & d3pfs$Hypothesis=="Superiority","plan.hr"])
+wilcox.test((d3pfs[d3pfs$glioma2=="New GBM","plan.hr"]), (d3os[d3os$glioma2=="New GBM" & d3os$Hypothesis=="Superiority","plan.hr"]))
+
+summary(d3os[d3os$glioma2=="New GBM" & d3os$age2=="Elderly ","plan.hr"])
+summary(d3os[d3os$glioma2=="New GBM" & d3os$age2=="Elderly " & d3os$Hypothesis=="Superiority","plan.hr"])
 
 d3pfs<-subset(d, Outcome=="PFS" & Phase==3 & !is.na(plan.hr)) %>% add_count(glioma2) %>% filter(n > 1)
 m<-ggplot(d3pfs, aes(x=fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75)), y=plan.hr))+geom_boxplot(fill="dodgerblue")+
-  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.67, linetype="longdash")+
+  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.665, linetype="longdash")+
   ylab("Targeted Hazard Ratio")+theme(plot.tag = element_text(face = "bold"))+rremove("ylab")+
   coord_flip(ylim = c(0.45, 0.8))+ggtitle("PFS Targeted HR - Phase 3 Trials")+labs(tag = "B")
 mi<-ggplot(d3pfs, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75))))+geom_bar()+
@@ -292,7 +374,7 @@ summary(d3pfs[d3pfs$glioma2=="New GBM","plan.hr"])
 
 d2os<-subset(d, Outcome=="OS" & Phase==2 & !is.na(plan.hr)) %>% add_count(glioma2) %>% filter(n > 1)
 n<-ggplot(d2os, aes(x=fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.5)), y=plan.hr))+geom_boxplot(fill="magenta")+
-  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.67, linetype="longdash")+
+  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.665, linetype="longdash")+
   xlab("Diagnosis")+ylab("Targeted Hazard Ratio")+theme(plot.tag = element_text(face = "bold"))+
   coord_flip(ylim = c(0.45, 0.8))+ggtitle("OS Targeted HR - Phase 2 Trials")+labs(tag = "C")
 ni<-ggplot(d2os, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.5))))+geom_bar()+
@@ -307,7 +389,7 @@ ggplot(d, aes(Phase, plan.hr))+geom_boxplot()+stat_compare_means()+
 
 d2pfs<-subset(d, Outcome=="PFS" & Phase==2 & !is.na(plan.hr)) %>% add_count(glioma2) %>% filter(n > 1)
 o<-ggplot(d2pfs, aes(x=fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75)), y=plan.hr))+geom_boxplot(fill="cadetblue")+
-  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.67, linetype="longdash")+
+  theme_pubr()+geom_hline(yintercept = 0.75, linetype="longdash")+geom_hline(yintercept = 0.665, linetype="longdash")+
   ylab("Targeted Hazard Ratio")+theme(plot.tag = element_text(face = "bold"))+rremove("ylab")+
   coord_flip(ylim = c(0.45, 0.8))+ggtitle("PFS Targeted HR - Phase 2 Trials")+labs(tag = "D")
 oi<-ggplot(d2pfs, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75))))+geom_bar()+
@@ -315,22 +397,26 @@ oi<-ggplot(d2pfs, aes(fct_reorder(glioma2, plan.hr, function(x) quantile(x, 0.75
   geom_text(stat = 'count', aes(label = after_stat(count)), hjust = -0.5) +ylab("Arms")+theme_pubr()+
   rremove("y.axis")+rremove("ylab")+rremove("y.text")+rremove("y.ticks")+coord_flip()
 
+
+plotly::ggplotly(ggplot(d[d$glioma3=="GBM",], aes(age2, plan.hr))+geom_boxplot()+stat_compare_means()+geom_jitter())
+plotly::ggplotly(ggplot(d[d$glioma3=="GBM" & d$Hypothesis=="Superiority",], aes(age2, plan.hr))+geom_boxplot()+stat_compare_means()+geom_jitter())
+
 ostime2<-d[d$Outcome=="OS" & d$glioma2=="New GBM",]
 pfstime<-d[d$Outcome=="PFS" & d$glioma2=="New GBM",]
 
-shade_data1 <- data.frame(y = c(0.76,0.6,0.37,1),
-                         x = c(2000, 2000, 2025, 2025) )
+shade_data1 <- data.frame(y = c(0.76,0.6,0.35,1),
+                         x = c(1998, 1998, 2025, 2025) )
 
 oht<-ggplot(d[d$Outcome=="OS" & d$glioma2=="New GBM",], aes(Year,plan.hr))+
   geom_polygon(data = shade_data1, aes(x = x, y = y), fill = "grey80", alpha = 0.5) + # Shaded area
   geom_smooth(method='lm', formula= y~x, se = T,color = "sandybrown", fill = "sandybrown")+geom_point(aes(color = Phase))+
-  geom_text(x = 2004, y = .98, label = lm_eqn(ostime2, ostime2$plan.hr, ostime2$Year), parse = TRUE)+theme_pubr()+
+  geom_text(x = 2004, y = .95, label = lm_eqn(ostime2, ostime2$plan.hr, ostime2$Year), parse = TRUE)+theme_pubr()+
   xlab("Year of Trial Publication")+ylab("Target Hazard Ratio")+ggtitle("OS Targeted HR - New GBM Trials")+
   theme(plot.tag = element_text(face = "bold"), legend.position = c(0.1, 0.25))+labs(tag = "X")+ylim(0.35,1)+xlim(1990,2025)+
   scale_color_manual(values = c("2" = "magenta", "3" = "red"))+labs(tag = "E")
 
 pht<-ggplot(d[d$Outcome=="PFS" & d$glioma2=="New GBM",], aes(Year,plan.hr))+geom_smooth(method='lm', formula= y~x, se = T,color = "dodgerblue", fill = "dodgerblue")+geom_point(aes(color = Phase))+
-  geom_text(x = 2003, y = .98, label = lm_eqn(pfstime, pfstime$plan.hr, pfstime$Year), parse = TRUE)+theme_pubr()+
+  geom_text(x = 2003, y = .95, label = lm_eqn(pfstime, pfstime$plan.hr, pfstime$Year), parse = TRUE)+theme_pubr()+
   xlab("Year of Trial Publication")+rremove("ylab")+ggtitle("PFS Targeted HR - New GBM Trials")+
   theme(plot.tag = element_text(face = "bold"), legend.position = c(0.1, 0.25))+labs(tag = "X")+ylim(0.35,1)+xlim(1990,2025)+
   scale_color_manual(values = c("2" = "cadetblue", "3" = "blue"))+labs(tag = "F")
@@ -344,54 +430,58 @@ pht<-ggplot(d[d$Outcome=="PFS" & d$glioma2=="New GBM",], aes(Year,plan.hr))+geom
       IIKK", widths = c(4, 1, 4, 1))
 #12.5 x 9 in PDF (landscape)
 
-##### FIGURE 5 ######
+##### FIGURE 4 ######
 
 perctime<-d[,c(which(colnames(d)=="plan.con.time"),which(colnames(d)=="plan.con.perc.surv"),
                which(colnames(d)=="final.con.time"),which(colnames(d)=="final.con.perc.surv"),
                which(colnames(d)=="glioma2"),which(colnames(d)=="ss.achieved"),which(colnames(d)=="Outcome"))]
 perctime<-rbind(perctime,perctime)
-perctime$plan.con.time[251:500]<-perctime$final.con.time[1:250]
-perctime$plan.con.perc.surv[251:500]<-perctime$final.con.perc.surv[1:250]
-perctime$time<-c(rep("Expected",250),rep("Final",250))
+perctime$plan.con.time[255:508]<-perctime$final.con.time[1:254]
+perctime$plan.con.perc.surv[255:508]<-perctime$final.con.perc.surv[1:254]
+perctime$time<-c(rep("Expected",254),rep("Final",254))
 
 perctime$final.con.perc.surv<-perctime$final.con.time<-NULL
 perctime<-perctime[!is.na(perctime$plan.con.time),]
 #number of different times
-summary(factor(perctime[perctime$Outcome=="OS",]$plan.con.time))
-summary(factor(perctime[perctime$Outcome=="PFS",]$plan.con.time))
+summary(factor(perctime[perctime$Outcome=="OS" & perctime$time=="Expected",]$plan.con.time))
+summary(factor(perctime[perctime$Outcome=="PFS"& perctime$time=="Expected",]$plan.con.time))
 
 perctime<-perctime[!is.na(perctime$plan.con.perc.surv),]
 pos<-perctime[perctime$Outcome=="OS",]
-pos<-pos[pos$glioma2=="New GBM"|pos$glioma2=="New HGG"|pos$glioma2=="New LGG",]
+pos<-pos[pos$glioma2=="New GBM"|pos$glioma2=="New HGG"|pos$glioma2=="New LGG"|pos$glioma2=="Recurrent GBM",]
 pos<-pos[pos$plan.con.time==9|pos$plan.con.time==12|pos$plan.con.time==24|pos$plan.con.time==60,]
 pos<-pos[!is.na(pos$plan.con.time),]
 pos<-pos[!(pos$glioma2=="New GBM" & pos$plan.con.time==60),]
+pos<-pos[!(pos$glioma2=="New GBM" & pos$plan.con.time==9),]
 pos<-pos[!(pos$glioma2=="New HGG" & pos$plan.con.time==12),]
 
-pos$glioma2<-factor(pos$glioma2, levels = c("New GBM","New HGG","New LGG"))
+pos$glioma2<-factor(pos$glioma2, levels = c("New GBM","New HGG","New LGG","Recurrent GBM"))
 pos[pos$glioma2=="New GBM" & pos$time=="Expected","plan.con.perc.surv"]
 t<-ggplot(pos, aes(factor(plan.con.time),plan.con.perc.surv, fill=time))+geom_boxplot()+
   theme_pubr()+facet_grid(. ~ glioma2, scales = "free_x", space = "free")+ylim(0,90)+theme(plot.tag = element_text(face = "bold"))+
   stat_summary(fun.data = give.n, geom = "text", fun.y = max, position = position_dodge2(width = 0.75), size = 4)+
-  labs(fill="Control Arm\nSurvival", tag = "A")+ylab("Percent Survival")+xlab("Time (Months)")+theme(legend.position = "right")+
+  labs(fill="Control Arm Survival", tag = "A")+ylab("Percent Survival")+xlab("Time (Months)")+theme(legend.position = "top")+
   ggtitle("Overall Survival")
 
 ppfs<-perctime[perctime$Outcome=="PFS",]
-ppfs<-ppfs[!(ppfs$glioma2=="New AA"|ppfs$glioma2=="New GBM - umMGMT"|ppfs$glioma2=="Recurrent HGG"|ppfs$glioma2=="New or Recur GBM"|ppfs$glioma2=="New LGG"|ppfs$glioma2=="New or Recur MB"),]
-ppfs<-ppfs[ppfs$plan.con.time==6|ppfs$plan.con.time==12|ppfs$plan.con.time==60,]
+ppfs<-ppfs[!(ppfs$glioma2=="New AA"|ppfs$glioma2=="New GBM - umMGMT"|ppfs$glioma2=="New or Recur GBM"|ppfs$glioma2=="New LGG"|ppfs$glioma2=="New or Recur MB"),]
 ppfs<-ppfs[!is.na(ppfs$plan.con.time),]
 ppfs<-ppfs[!(ppfs$glioma2=="New HGG" & ppfs$plan.con.time==6),]
+ppfs<-ppfs[!(ppfs$glioma2=="New HGG" & ppfs$plan.con.time==60),]
+ppfs<-ppfs[!(ppfs$glioma2=="Recurrent GBM" & ppfs$plan.con.time==12),]
 
-ppfs$glioma2<-factor(ppfs$glioma2, levels = c("New GBM","New HGG","Recurrent GBM","New MB"))
+ppfs$glioma2<-factor(ppfs$glioma2, levels = c("New GBM","New HGG","Recurrent GBM","Recurrent HGG","New MB"))
 u<-ggplot(ppfs, aes(factor(plan.con.time),plan.con.perc.surv, fill=time))+geom_boxplot()+
   theme_pubr()+facet_grid(. ~ glioma2, scales = "free_x", space = "free")+ylim(0,90)+theme(plot.tag = element_text(face = "bold"))+
   stat_summary(fun.data = give.n, geom = "text", fun.y = max, position = position_dodge2(width = 0.75), size = 4)+
-  labs(fill="PFS", tag = "B")+ylab("Percent Survival")+xlab("Time (Months)")+ggtitle("Progression Free Survival")
+  labs(fill="PFS", tag = "B")+ylab("Percent Survival")+xlab("Time (Months)")+ggtitle("Progression Free Survival")+rremove("legend")
 
-(t+rremove("legend")+get_legend(t)+plot_layout(widths = c(4.125,1)))/u+rremove("legend")
-#9x6in pdf portrait
+(as_ggplot(get_legend(t))) /
+  ( (t + rremove("legend")) / (u + rremove("legend")) ) +
+  plot_layout(heights = c(0.025, 1))
+#9x7in pdf portrait
 
-##### FIGURE 6 ######
+##### FIGURE 5 ######
 
 #sample size 
 shade_data <- data.frame(x = c(min(d$ss.achieved, na.rm = TRUE), max(d$ss.achieved, na.rm = TRUE), 
@@ -428,7 +518,7 @@ sd(d$final.hr[!is.na(d$final.hr) & d$ssbin=="≤400"])
 sd(d$final.hr[!is.na(d$final.hr) & d$ssbin==">400"])
 
 
-###### FIGURE 7 ########
+###### FIGURE 6 ########
 
 d3<-d %>% distinct(pmid, .keep_all = TRUE)
 
@@ -436,6 +526,7 @@ length(d3[is.na(d3$ss) & !is.na(d3$ss.achieved),"pmid"]) #trials that didn't rep
 length(d3[!is.na(d3$ss) & !is.na(d3$ss.achieved),"pmid"]) #trials that reported both pre-specified SS and final
 
 d4<-d3[!is.na(d3$ss) & !is.na(d3$ss.achieved),]
+summary(d4$reason)
 
 #write.csv(d4,"d4.csv")
 
@@ -481,13 +572,13 @@ q1[["data"]]<- q1[["data"]] %>% arrange(reason)      # Ensures that NA values co
 gbm<-subset(d,glioma2=="New GBM") %>% distinct(pmid, .keep_all = TRUE)
 
 r<-ggplot(gbm, aes(ss.achieved,ss.achieved/accural))+geom_smooth(method='lm', formula= y~x, se = T)+geom_point()+
-  geom_text(x = 380, y = 30, label = lm_eqn(gbm, gbm$ss.achieved/gbm$accural, gbm$ss.achieved), parse = TRUE)+theme_pubr()+
+  geom_text(x = 300, y = 30, label = lm_eqn2(gbm, gbm$ss.achieved/gbm$accural, gbm$ss.achieved), parse = TRUE)+theme_pubr()+
   xlab("Sample Size Achieved")+ylab("Est. Monthly Enrollment")+ggtitle("Enrollment Rate of New GBM Trials")+
   theme(plot.tag = element_text(face = "bold"))+labs(tag = "C")
 
 s<-ggplot(gbm, aes(ss.achieved,followup))+geom_smooth(method='lm', formula= y~x, se = T)+geom_point()+
-  geom_text(x = 425, y = 86, label = lm_eqn(gbm, gbm$followup,gbm$ss.achieved), parse = TRUE)+theme_pubr()+
-  geom_hline(yintercept = 24, linetype="longdash")+xlab("Sample Size Achieved")+ylab("Followup (Months)")+ggtitle("Followup Time in New GBM Trials")+
+  geom_text(x = 550, y = 65, label = lm_eqn(gbm, gbm$followup,gbm$ss.achieved), parse = TRUE)+theme_pubr()+
+  xlab("Sample Size Achieved")+ylab("Followup (Months)")+ggtitle("Followup Time in New GBM Trials")+
   scale_y_continuous(breaks = c(24,50,75,100))+theme(plot.tag = element_text(face = "bold"))+labs(tag = "D")
 si<-ggplot(gbm, aes(followup))+geom_boxplot()+coord_flip()+theme_void()
 
@@ -495,24 +586,318 @@ q+q1+plot_spacer()+r+s+si +plot_layout(widths = c(10,10,1))
 #12x8 in pdf
 
 ggplot(gbm, aes(ss.achieved/accural,followup))+geom_smooth(method='lm', formula= y~x, se = T)+geom_point()+
-  geom_text(x = 15, y = 86, label = lm_eqn(gbm, gbm$followup,gbm$ss.achieved/gbm$accural), parse = TRUE)+theme_pubr()+
+  geom_text(x = 15, y = 60, label = lm_eqn(gbm, gbm$followup,gbm$ss.achieved/gbm$accural), parse = TRUE)+theme_pubr()+
   geom_hline(yintercept = 24, linetype="longdash")+xlab("Est. Monthly Enrollment")+ylab("Followup (Months)")+ggtitle("Enrollment in New GBM Trials")+
   scale_y_continuous(breaks = c(24,50,75,100))+theme(plot.tag = element_text(face = "bold"))+labs(tag = "D")
 
 
 ### drop in power with time as survival increases
 library(rpact)
-a<-48 #accural
+a<-36 #accural
 b<-24 #follow up
 t<-0.25*((a+b)/12) #increase in median OS
-m<-15 #median OS
+m<-16 #median OS
 
-ss<-getSampleSizeSurvival(getDesignGroupSequential(kMax = 1, alpha = 0.025, sided = 1, beta = .2), hazardRatio = 0.75, median2 = m, 
+ss<-getSampleSizeSurvival(getDesignGroupSequential(kMax = 1, alpha = 0.05, sided = 1, beta = .2), hazardRatio = 0.75, median2 = m, 
                           accrualTime = c(0,a), followUpTime = b, dropoutRate1 = .1, dropoutRate2 = .1, dropoutTime = a)
 
-p<-getPowerSurvival(getDesignGroupSequential(kMax = 1, alpha = 0.025, sided = 1, beta = .2), hazardRatio = 0.75, median2 = m+t, 
+p<-getPowerSurvival(getDesignGroupSequential(kMax = 1, alpha = 0.05, sided = 1, beta = .2), hazardRatio = 0.75, median2 = m+t, 
                     accrualTime = c(0,a), followUpTime = b, dropoutRate1 = .1, dropoutRate2 = .1, dropoutTime = a,
                     maxNumberOfSubjects=ss[["maxNumberOfSubjects"]], maxNumberOfEvents=ss[["maxNumberOfEvents"]]*(m/(m+t)), 
                     directionUpper=F)
 
 p[["overallReject"]]
+
+
+############# FIGURE 6 ##############
+
+# ---- Packages ----
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+library(scales)
+library(patchwork)
+
+# ---- Design parameters ----
+alpha_one_sided <- 0.05
+power_target    <- 0.80
+accrual_months  <- 36   # uniform accrual
+followup_months <- 24   # additional follow-up
+alloc_pi        <- 0.5  # 1:1
+hr_grid         <- seq(0.65, 0.825, by = 0.005)
+control_medians <- c(16, 21)
+expected_control_median <- 16
+delta_months <- seq(0, 5, by = 0.1)
+hr_set <- c(0.67, 0.75)
+
+# ---- Helpers (shared) ----
+events_required <- function(hr, alpha = alpha_one_sided, power = power_target, pi = alloc_pi) {
+  z_alpha <- qnorm(1 - alpha)
+  z_beta  <- qnorm(power)
+  ((z_alpha + z_beta)^2) / ((log(hr)^2) * (pi * (1 - pi)))
+}
+
+avg_event_prob <- function(mu, A = accrual_months, F = followup_months) {
+  1 - (exp(-mu * F) - exp(-mu * (F + A))) / (mu * A)
+}
+
+sample_size_total <- function(hr, control_median_months,
+                              A = accrual_months, F = followup_months,
+                              alpha = alpha_one_sided, power = power_target, pi = alloc_pi) {
+  lambda_c <- log(2) / control_median_months
+  lambda_t <- hr * lambda_c
+  pc <- avg_event_prob(lambda_c, A, F)
+  pt <- avg_event_prob(lambda_t, A, F)
+  p_bar <- 0.5 * (pc + pt)
+  D_star <- events_required(hr, alpha, power, pi)
+  D_star / p_bar
+}
+
+power_with_fixed_N <- function(N_total, hr, control_median_months_obs,
+                               A = accrual_months, F = followup_months,
+                               alpha = alpha_one_sided, pi = alloc_pi) {
+  lambda_c <- log(2) / control_median_months_obs
+  lambda_t <- hr * lambda_c
+  pc <- avg_event_prob(lambda_c, A, F)
+  pt <- avg_event_prob(lambda_t, A, F)
+  p_bar <- 0.5 * (pc + pt)
+  D_obs <- N_total * p_bar
+  z_alpha <- qnorm(1 - alpha)
+  mu_alt <- sqrt(D_obs * pi * (1 - pi)) * abs(log(hr))
+  pnorm(mu_alt - z_alpha)
+}
+
+# ---- Data: Figure A (sample size vs HR, two control medians) ----
+# ---- Data: Figure A (sample size vs HR, 2 control medians × 2 alpha types) ----
+alpha_types <- c("One-sided 0.05", "Two-sided 0.05")
+
+dfA <- expand.grid(
+  HR = hr_grid,
+  ControlMedian = control_medians,
+  AlphaType = alpha_types
+) |>
+  as_tibble() |>
+  mutate(
+    # Convert to the effective one-sided tail used by z-critical
+    alpha_eff = ifelse(AlphaType == "Two-sided 0.05", 0.05 / 2, 0.05)
+  ) |>
+  rowwise() |>
+  mutate(N = sample_size_total(HR, ControlMedian, alpha = alpha_eff)) |>
+  ungroup() |>
+  mutate(
+    ControlMedian = factor(paste0(ControlMedian, " months"),
+                           levels = paste0(control_medians, " months")),
+    AlphaType = factor(AlphaType, levels = c("One-sided 0.05", "Two-sided 0.05"))
+  )
+
+# Distinct colors for control medians (blues), linetype for alpha convention
+palA <- c("16 months" = "#1f77b4",  # blue
+          "21 months" = "#6baed6")  # light blue
+
+p <- ggplot(dfA, aes(x = HR, y = N, color = ControlMedian, linetype = AlphaType)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    x = "Target hazard ratio\n(Treatment vs. Control)",
+    y = "Total sample size",
+    color = "Control median",
+    linetype = "Type I error"
+  ) +
+  scale_color_manual(values = palA) +
+  scale_linetype_manual(values = c("solid", "dotted")) +
+  scale_y_continuous(labels = scales::comma, limits = c(175, 1250)) +
+  theme_pubr(base_size = 12, border = TRUE, margin = TRUE) +
+  theme(
+    legend.position = c(0.03, 0.97),
+    legend.justification = c(0, 1),
+    legend.background = element_blank(),
+    plot.title = element_blank(),
+    panel.grid.major = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25),
+    panel.grid.minor = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25)
+  )
+
+# ---- Data: Figure B (power loss vs underestimation, percent) ----
+dfB <- expand.grid(HR = hr_set, DeltaMonths = delta_months) |>
+  as_tibble() |>
+  rowwise() |>
+  mutate(
+    control_median_obs = expected_control_median + DeltaMonths,
+    N_planned          = sample_size_total(HR, expected_control_median),
+    power_observed     = power_with_fixed_N(N_planned, HR, control_median_obs),
+    power_loss         = pmax(0, (power_target - power_observed) * 100)  # %
+  ) |>
+  ungroup() |>
+  mutate(HR = factor(HR))
+
+# Distinct colors for Panel B (no overlap with Panel A)
+palB <- c("0.67" = "#d62728",  # red
+          "0.75" = "#2ca02c")  # green
+
+pB <- ggplot(dfB, aes(x = DeltaMonths, y = power_observed, color = HR)) +
+  geom_line(linewidth = 1.2) +
+  geom_abline(intercept = .80, slope = (.75 - .80) / (5 - 0), 
+              linetype = "dashed", color = "black") +
+  labs(
+    x = "Months the final control median\nsurvival exceeds 16 months",
+    y = "Observed power (%) keeping\n5% one-sided type I error",
+    color = "Target hazard ratio"
+  ) +
+  scale_color_manual(values = palB) +
+  scale_x_continuous(limits = c(0, 5), breaks = 0:5) +
+  scale_y_continuous(limits = c(0.75, 0.80), labels = scales::percent_format(accuracy = 1)) +
+  theme_pubr(base_size = 12, border = TRUE, margin = TRUE) +
+  theme(
+    legend.position = c(0.97, 0.97),
+    legend.justification = c(1, 1),
+    legend.background = element_blank(),
+    plot.title = element_blank()
+  )
+
+# ---- Data: Figure C (alpha loss vs underestimation, percent) ----
+df_alpha_needed <- dfB |>
+  mutate(
+    # re-compute observed events at each Δ for clarity
+    lambda_c = log(2) / (expected_control_median + DeltaMonths),
+    lambda_t = as.numeric(as.character(HR)) * lambda_c,
+    pc = avg_event_prob(lambda_c, accrual_months, followup_months),
+    pt = avg_event_prob(lambda_t, accrual_months, followup_months),
+    p_bar = 0.5 * (pc + pt),
+    D_obs = N_planned * p_bar,
+    mu_alt = sqrt(D_obs * alloc_pi * (1 - alloc_pi)) * abs(log(as.numeric(as.character(HR)))),
+    z_beta = qnorm(power_target),
+    alpha_needed = 1 - pnorm(mu_alt - z_beta),                 # one-sided α to retain 80% power
+    alpha_needed_pct = 100 * alpha_needed
+  )
+
+p_alpha <- ggplot(df_alpha_needed, aes(x = DeltaMonths, y = alpha_needed, color = HR)) +
+  geom_line(linewidth = 1.2) +
+  geom_abline(intercept = .05, slope = (.1 - .05) / (5 - 0), 
+              linetype = "dashed", color = "black") +
+  labs(x = "Months the final control median\nsurvival exceeds 16 months",
+       y = "One-sided type I error\n keeping 80% power (%)",
+       color = "Target hazard ratio") +
+  scale_color_manual(values = palB) +
+  scale_y_continuous(limits = c(.05, .10), labels = scales::percent_format(accuracy = 1)) +
+  theme_pubr(base_size = 12, border = TRUE, margin = TRUE) +
+  theme(
+    legend.position = c(0.03, 0.97),
+    legend.justification = c(0, 1),
+    legend.background = element_blank(),
+    plot.title = element_blank()
+  )
+
+
+
+# =========================
+# Underestimating the HR with two control medians
+# True (observed) HR fixed at 0.80
+# Panels: pB_hr (power) and pC_hr (alpha needed)
+# =========================
+
+hr_obs <- 0.80
+control_medians_hr <- c(16, 21)
+delta_hr <- seq(0, 0.15, by = 0.005)  # ΔHR = hr_obs - HR_planned (>=0)
+
+# Build data analogous to dfB but now varying ControlMedian ∈ {16, 21}
+dfB_hr <- expand.grid(
+  DeltaHR = delta_hr,
+  ControlMedian = control_medians_hr
+) |>
+  as_tibble() |>
+  mutate(
+    HR_planned  = pmax(1e-4, hr_obs - DeltaHR),
+    ctrl_label  = factor(paste0(ControlMedian, " months"),
+                         levels = paste0(control_medians_hr, " months"))
+  ) |>
+  rowwise() |>
+  mutate(
+    # N planned with (too optimistic) HR_planned and chosen control median
+    N_planned      = sample_size_total(HR_planned, ControlMedian),
+    # Observed power if the true HR is actually 0.80 and same control median holds
+    power_observed = power_with_fixed_N(N_planned, hr_obs, ControlMedian),
+    power_loss     = pmax(0, (power_target - power_observed) * 100)
+  ) |>
+  ungroup()
+
+# Palette for control medians
+pal_hr <- c("16 months" = "#1f77b4",   # blue
+            "21 months" = "#6baed6")   # light blue
+
+# Helper to set padded coord ranges without dropping rows
+pad_range <- function(x, pad = 0.02) {
+  r <- range(x, na.rm = TRUE); span <- diff(r)
+  if (span == 0) r <- r + c(-1, 1) * 0.01
+  c(r[1] - pad * span, r[2] + pad * span)
+}
+y_rng_power <- pad_range(dfB_hr$power_observed)
+
+# ---- Panel: Observed power vs HR underestimation (two curves) ----
+pB_hr <- ggplot(dfB_hr, aes(x = HR_planned, y = power_observed, color = ctrl_label)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    x = "Targeted hazard ratio\nassuming true value of 0.8",
+    y = "Observed power (%) keeping\n5% one-sided type I error",
+    color = "Control median"
+  ) +
+  scale_color_manual(values = pal_hr) +
+  scale_x_reverse(limits = c(0.80, 0.65), breaks = seq(0.80, 0.65, by = -0.05)) +  # reversed
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  coord_cartesian(ylim = y_rng_power) +
+  theme_pubr(base_size = 12, border = TRUE, margin = TRUE) +
+  theme(
+    legend.position = c(0.97, 0.97),
+    legend.justification = c(1, 1),
+    legend.background = element_blank(),
+    plot.title = element_blank(),
+    panel.grid.major = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25),
+    panel.grid.minor = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25)
+  )
+
+# ---- Alpha needed to retain 80% power (two curves) ----
+dfC_hr <- dfB_hr |>
+  mutate(
+    lambda_c = log(2) / ControlMedian,
+    lambda_t = hr_obs * lambda_c,
+    pc       = avg_event_prob(lambda_c, accrual_months, followup_months),
+    pt       = avg_event_prob(lambda_t, accrual_months, followup_months),
+    p_bar    = 0.5 * (pc + pt),
+    D_obs    = N_planned * p_bar,
+    mu_alt   = sqrt(D_obs * alloc_pi * (1 - alloc_pi)) * abs(log(hr_obs)),
+    z_beta   = qnorm(power_target),
+    alpha_needed = 1 - pnorm(mu_alt - z_beta)
+  )
+y_rng_alpha <- pad_range(dfC_hr$alpha_needed)
+
+pC_hr <- ggplot(dfC_hr, aes(x = HR_planned, y = alpha_needed, color = ctrl_label)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    x = "Targeted hazard ratio\nassuming true value of 0.8",
+    y = "One-sided type I error\nkeeping 80% power (%)",
+    color = "Control median"
+  ) +
+  scale_color_manual(values = pal_hr) +
+  scale_x_reverse(limits = c(0.80, 0.65), breaks = seq(0.80, 0.65, by = -0.05)) +  # reversed
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  coord_cartesian(ylim = y_rng_alpha) +
+  theme_pubr(base_size = 12, border = TRUE, margin = TRUE) +
+  theme(
+    legend.position = c(0.03, 0.97),
+    legend.justification = c(0, 1),
+    legend.background = element_blank(),
+    plot.title = element_blank(),
+    panel.grid.major = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25),
+    panel.grid.minor = element_line(color = "grey90", linetype = "dashed", linewidth = 0.25)
+  )
+
+# ---- Five-panel combo (HR underestimation) ----
+# Right-hand 2x2 grid
+right_four <- (pB_hr + pC_hr + pB + p_alpha) +
+  plot_layout(ncol = 2)
+
+# Full layout: left = p, right = 2x2 grid; width ratio 1:2
+(p | right_four) +
+  plot_layout(widths = c(1, 2)) +
+  plot_annotation(tag_levels = "A") &
+  theme(plot.tag = element_text(face = "bold", size = 14))
+#1075x650 (or 10.75 vs 6.5 in)
+
+
